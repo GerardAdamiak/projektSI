@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Category Details {{ category.id|default('') }}
+{% endblock %}
+
+{% block body %}
+    <h1>Category Details {{ category.id|default('') }}</h1>
+    {% if category is defined %}
+        <dl class="dl-horizontal">
+            <dt>ID</dt>
+            <dd>{{ category.id }}</dd>
+            <dt>Created At</dt>
+            <dd>{{ category.createdAt|format_date('long') }}</dd>
+            <dt>Updated At</dt>
+            <dd>{{ category.updatedAt|format_date('long') }}</dd>
+            <dt>Title</dt>
+            <dd>{{ category.title }}</dd>
+        </dl>
+        <p>
+            <a href="{{ path('category_index') }}" title="Back to list">
+                Back to list
+            </a>
+        </p>
+    {% else %}
+        <p>
+            Category not found.
+        </p>
+    {% endif %}
+{% endblock %}
