@@ -5,6 +5,10 @@
 
 namespace App\Service;
 
+use App\Dto\PostListFiltersDto;
+use App\Dto\PostListInputFiltersDto;
+use App\Entity\Post;
+use App\Entity\User;
 use App\Repository\PostRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -23,31 +27,71 @@ class PostService implements PostServiceInterface
      *
      * @constant int
      */
+
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
      * Constructor.
      *
-     * @param PostRepository     $postRepository Post repository
-     * @param PaginatorInterface $paginator      Paginator
+     * @param CategoryServiceInterface $categoryService Category service
+     * @param PaginatorInterface       $paginator       Paginator
+     * @param PostRepository          $postRepository Post repository
      */
-    public function __construct(private readonly PostRepository $postRepository, private readonly PaginatorInterface $paginator)
+    public function __construct(private readonly CategoryServiceInterface $categoryService, private readonly PaginatorInterface $paginator, private readonly PostRepository $postRepository)
     {
     }
 
     /**
      * Get paginated list.
      *
-     * @param int $page Page number
+     * @param int                      $page    Page number
+     * @param User                     $author  Post author
+     * @param PostListInputFiltersDto $filters Filters
      *
-     * @return PaginationInterface<string, mixed> Paginated list
+     * @return PaginationInterface<SlidingPagination> Paginated list
      */
-    public function getPaginatedList(int $page): PaginationInterface
+    public function getPaginatedList(int $page, User $author, PostListInputFiltersDto $filters): PaginationInterface
     {
+        $filters = $this->prepareFilters($filters);
+
         return $this->paginator->paginate(
-            $this->postRepository->queryAll(),
+            $this->postRepository->queryByAuthor($author, $filters),
             $page,
             self::PAGINATOR_ITEMS_PER_PAGE
+        );
+    }
+
+    /**
+     * Save entity.
+     *
+     * @param Post $post Post entity
+     */
+    public function save(Post $post): void
+    {
+        $this->postRepository->save($post);
+    }
+
+    /**
+     * Delete entity.
+     *
+     * @param Post $post Post entity
+     */
+    public function delete(Post $post): void
+    {
+        $this->postRepository->delete($post);
+    }
+
+    /**
+     * Prepare filters for the posts list.
+     *
+     * @param PostListInputFiltersDto $filters Raw filters from request
+     *
+     * @return PostListFiltersDto Result filters
+     */
+    private function prepareFilters(PostListInputFiltersDto $filters): PostListFiltersDto
+    {
+        return new PostListFiltersDto(
+            null !== $filters->categoryId ? $this->categoryService->findOneById($filters->categoryId) : null
         );
     }
 }

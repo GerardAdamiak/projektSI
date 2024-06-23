@@ -6,6 +6,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
+
 use DateTimeImmutable;
 
 /**

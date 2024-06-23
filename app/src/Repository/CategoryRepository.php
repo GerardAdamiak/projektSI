@@ -6,8 +6,10 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,18 +24,14 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategoryRepository extends ServiceEntityRepository
 {
-    private EntityManagerInterface $_em;
-
     /**
      * Constructor.
      *
      * @param ManagerRegistry $registry Manager registry
-     * @param EntityManagerInterface $entityManager Entity manager
      */
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Category::class);
-        $this->_em = $entityManager;
     }
 
     /**
@@ -44,7 +42,8 @@ class CategoryRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->select('category');
+            ->select('partial category.{id, createdAt, updatedAt, title}')
+            ->orderBy('category.updatedAt', 'DESC');
     }
 
     /**
@@ -58,7 +57,6 @@ class CategoryRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?? $this->createQueryBuilder('category');
     }
-
     /**
      * Save entity.
      *
@@ -66,10 +64,10 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function save(Category $category): void
     {
+        assert($this->_em instanceof EntityManager);
         $this->_em->persist($category);
         $this->_em->flush();
     }
-
     /**
      * Delete entity.
      *
@@ -80,7 +78,9 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function delete(Category $category): void
     {
+        assert($this->_em instanceof EntityManager);
         $this->_em->remove($category);
         $this->_em->flush();
     }
+
 }

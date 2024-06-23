@@ -1,42 +1,48 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title.post_list'|trans }}
+    Post List
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.post_list'|trans }}</h1>
-    {% if pagination is defined and pagination.items|length %}
-
-        <div class="navigation text-center">
-            {{ knp_pagination_render(pagination) }}
+    <h1>Post List</h1>
+    <div class="row mb-3">
+        <div class="col">
+            <a href="{{ path('post_create') }}" class="btn btn-primary">Add new</a>
         </div>
-
+    </div>
+    {% if pagination is defined and pagination.items|length %}
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'label.id'|trans, 'post.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.created_at'|trans, 'post.createdAt') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.updated_at'|trans, 'post.updatedAt') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.title'|trans, 'post.title') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label_category'|trans, 'category.title') }}</th>
-                <th>{{ 'label.actions'|trans }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'ID', 'post.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Created At', 'post.createdAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Updated At', 'post.updatedAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Title', 'post.title') }}</th>
+                <th>Category</th>
+                <th>{{ knp_pagination_sortable(pagination, 'Post Date', 'post.postDate') }}</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
             {% for post in pagination.items %}
                 <tr>
                     <td>{{ post.id }}</td>
-                    {# templates/post/index.html.twig #}
-                    <td>{{ post.createdAt|format_date('long') }}</td>
-                    {# templates/post/index.html.twig #}
-                    <td>{{ post.updatedAt|format_date('long') }}</td>
+                    <td>{{ post.createdAt|date('Y/m/d') }}</td>
+                    <td>{{ post.updatedAt|date('Y/m/d') }}</td>
                     <td>{{ post.title }}</td>
-                    <td>{{ post.category.title }}</td>
                     <td>
-                        <a href="{{ url('post_show', {id: post.id}) }}" title="{{ 'action.show'|trans }}">
-                            {{ 'action.show'|trans }}
+                        <a class="btn btn-outline-primary" href="{{ path('post_index', {'categoryId' : post.category.id}) }}" title="{{ post.category.title }}">
+                            {{ post.category.title }}
                         </a>
+                    </td>
+                    <td>{{ post.postDate|date('Y/m/d H:i') }}</td>
+                    <td>
+                        <a href="{{ path('post_show', {id: post.id}) }}" title="Show" class="btn btn-info">Show</a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('post_edit', {id: post.id}) }}" title="Edit" class="btn btn-warning">Edit</a>
+                        <a href="{{ path('post_delete', {id: post.id}) }}" title="Delete" class="btn btn-danger">Delete</a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -46,10 +52,10 @@
         <div class="navigation text-center">
             {{ knp_pagination_render(pagination) }}
         </div>
-
     {% else %}
-        <p>
-            {{ 'message.empty_list'|trans }}
-        </p>
+        {% include 'default/_single_alert_message.html.twig' with {
+            type: 'warning',
+            message: 'No posts found.'
+        } %}
     {% endif %}
 {% endblock %}

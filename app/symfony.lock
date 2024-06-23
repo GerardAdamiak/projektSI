@@ -13,8 +13,8 @@
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
-            "version": "2.10",
-            "ref": "c170ded8fc587d6bd670550c43dafcf093762245"
+            "version": "2.12",
+            "ref": "7b1b0b637b337f6beb895589948cd119da705524"
         },
         "files": [
             "config/packages/doctrine.yaml",
@@ -48,7 +48,7 @@
         ]
     },
     "friendsofphp/php-cs-fixer": {
-        "version": "3.58",
+        "version": "3.56",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -89,7 +89,7 @@
         ]
     },
     "squizlabs/php_codesniffer": {
-        "version": "3.10",
+        "version": "3.9",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
             "branch": "main",
@@ -98,6 +98,18 @@
         },
         "files": [
             "phpcs.xml.dist"
+        ]
+    },
+    "stof/doctrine-extensions-bundle": {
+        "version": "1.11",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.2",
+            "ref": "e805aba9eff5372e2d149a9ff56566769e22819d"
+        },
+        "files": [
+            "config/packages/stof_doctrine_extensions.yaml"
         ]
     },
     "symfony/asset-mapper": {
@@ -183,7 +195,7 @@
         ]
     },
     "symfony/maker-bundle": {
-        "version": "1.60",
+        "version": "1.59",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -228,7 +240,7 @@
         ]
     },
     "symfony/phpunit-bridge": {
-        "version": "7.1",
+        "version": "7.0",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -269,7 +281,7 @@
         ]
     },
     "symfony/stimulus-bundle": {
-        "version": "2.18",
+        "version": "2.17",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -309,7 +321,7 @@
         ]
     },
     "symfony/ux-turbo": {
-        "version": "v2.18.0"
+        "version": "v2.17.0"
     },
     "symfony/validator": {
         "version": "6.4",

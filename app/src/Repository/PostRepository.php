@@ -5,10 +5,19 @@
 
 namespace App\Repository;
 
+use App\Dto\PostListFiltersDto;
+use App\Entity\Category;
 use App\Entity\Post;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class PostRepository.
@@ -19,21 +28,10 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Post[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  *
  * @extends ServiceEntityRepository<Post>
- *
- * @psalm-suppress LessSpecificImplementedReturnType
  */
 class PostRepository extends ServiceEntityRepository
 {
-    /**
-     * Items per page.
-     *
-     * Use constants to define configuration options that rarely change instead
-     * of specifying them in configuration files.
-     * See https://symfony.com/doc/current/best_practices.html#configuration
-     *
-     * @constant int
-     */
-    public const PAGINATOR_ITEMS_PER_PAGE = 3;
+    public const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
      * Constructor.
@@ -48,14 +46,72 @@ class PostRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
+     * @param PostListFiltersDto $filters Filters
+     *
      * @return QueryBuilder Query builder
      */
-    public function queryAll(): QueryBuilder
+    public function queryAll(PostListFiltersDto $filters): QueryBuilder
     {
-        return $this->getOrCreateQueryBuilder()
-            ->select('post', 'category')
+        $queryBuilder = $this->getOrCreateQueryBuilder()
+            ->select(
+                'partial post.{id, createdAt, updatedAt, title, postDate}',
+                'partial category.{id, title}'
+            )
             ->join('post.category', 'category')
             ->orderBy('post.updatedAt', 'DESC');
+
+        return $this->applyFiltersToList($queryBuilder, $filters);
+    }
+
+    /**
+     * Count posts by category.
+     *
+     * @param Category $category Category
+     *
+     * @return int Number of posts in category
+     *
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function countByCategory(Category $category): int
+    {
+        $qb = $this->getOrCreateQueryBuilder();
+
+        return $qb->select($qb->expr()->countDistinct('post.id'))
+            ->where('post.category = :category')
+            ->setParameter(':category', $category)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * Save entity.
+     *
+     * @param Post $post Post entity
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function save(Post $post): void
+    {
+        assert($this->_em instanceof EntityManager);
+        $this->_em->persist($post);
+        $this->_em->flush();
+    }
+
+    /**
+     * Delete entity.
+     *
+     * @param Post $post Post entity
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(Post $post): void
+    {
+        assert($this->_em instanceof EntityManager);
+        $this->_em->remove($post);
+        $this->_em->flush();
     }
 
     /**
@@ -65,8 +121,77 @@ class PostRepository extends ServiceEntityRepository
      *
      * @return QueryBuilder Query builder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('post');
+    }
+
+    /**
+     * Query posts by author.
+     *
+     * @param UserInterface       $user    User entity
+     * @param PostListFiltersDto $filters Filters
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function queryByAuthor(UserInterface $user, PostListFiltersDto $filters): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll($filters);
+
+        $queryBuilder->andWhere('post.author = :author')
+            ->setParameter('author', $user);
+
+        return $queryBuilder;
+    }
+
+    public function queryActualPosts(PostListFiltersDto $filters): QueryBuilder
+    {
+        $queryBuilder = $this->getOrCreateQueryBuilder()
+            ->select(
+                'partial post.{id, createdAt, updatedAt, title, postDate}',
+                'partial category.{id, title}'
+            )
+            ->join('post.category', 'category')
+            ->where('post.postDate >= :start_date')
+            ->andWhere('post.postDate <= :end_date')
+            ->setParameter('start_date', new \DateTime('-7 days'))
+            ->setParameter('end_date', new \DateTime())
+            ->orderBy('post.postDate', 'ASC');
+
+        return $this->applyFiltersToList($queryBuilder, $filters);
+    }
+
+    public function queryFuturePosts(PostListFiltersDto $filters): QueryBuilder
+    {
+        $queryBuilder = $this->getOrCreateQueryBuilder()
+            ->select(
+                'partial post.{id, createdAt, updatedAt, title, postDate}',
+                'partial category.{id, title}'
+            )
+            ->join('post.category', 'category')
+            ->where('post.postDate > :current_date')
+            ->setParameter('current_date', new \DateTime())
+            ->orderBy('post.postDate', 'ASC');
+
+        return $this->applyFiltersToList($queryBuilder, $filters);
+    }
+
+
+    /**
+     * Apply filters to paginated list.
+     *
+     * @param QueryBuilder        $queryBuilder Query builder
+     * @param PostListFiltersDto $filters      Filters
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function applyFiltersToList(QueryBuilder $queryBuilder, PostListFiltersDto $filters): QueryBuilder
+    {
+        if ($filters->category instanceof Category) {
+            $queryBuilder->andWhere('category = :category')
+                ->setParameter('category', $filters->category);
+        }
+
+        return $queryBuilder;
     }
 }

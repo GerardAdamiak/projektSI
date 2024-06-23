@@ -30,3 +30,4 @@ interface CategoryServiceInterface
     public function delete(Category $category): void;
 
 }
+

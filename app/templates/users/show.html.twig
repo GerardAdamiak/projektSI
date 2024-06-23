@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'Contact Details' }} {{ contact.id|default('') }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'Contact Details' }} {{ contact.id|default('') }}</h1>
+    <a href="{{ url('contact_edit', {id: contact.id}) }}" title="{{ 'Edit' }}">
+        {{ 'Edit' }}
+    </a>
+    {% if contact is defined and contact %}
+        <dl class="dl-horizontal">
+            <dt>{{ 'ID' }}</dt>
+            <dd>{{ contact.id }}</dd>
+            <dt>{{ 'Name' }}</dt>
+            <dd>{{ contact.name }}</dd>
+            <dt>{{ 'Surname' }}</dt>
+            <dd>{{ contact.surname }}</dd>
+            <dt>{{ 'Phone' }}</dt>
+            <dd>{{ contact.phone }}</dd>
+            <dt>{{ 'Address' }}</dt>
+            <dd>{{ contact.address }}</dd>
+        </dl>
+        <p>
+            <a href="{{ url('contact_index') }}" title="{{ 'Back to list' }}">
+                {{ 'Back to list' }}
+            </a>
+        </p>
+    {% else %}
+        <p>
+            {{ 'Contact not found.' }}
+        </p>
+    {% endif %}
+{% endblock %}
