@@ -1,20 +1,22 @@
 <?php
 /**
- * Contact type.
+ * User type.
  */
 
 namespace App\Form\Type;
 
-use App\Entity\Contact;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ContactType.
+ * Class UserType.
  */
-class ContactType extends AbstractType
+class UserType extends AbstractType
 {
     /**
      * Builds the form.
@@ -30,25 +32,18 @@ class ContactType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class, [
-                'label' => 'Name',
+            ->add('email', EmailType::class, [
+                'label' => 'Email',
                 'required' => true,
-                'attr' => ['maxlength' => 64],
             ])
-            ->add('surname', TextType::class, [
-                'label' => 'Surname',
+            ->add('roles', TextType::class, [
+                'label' => 'Roles',
                 'required' => true,
-                'attr' => ['maxlength' => 64],
-            ])
-            ->add('address', TextType::class, [
-                'label' => 'Address',
-                'required' => false,
                 'attr' => ['maxlength' => 255],
             ])
-            ->add('phone', TextType::class, [
-                'label' => 'Phone',
-                'required' => false,
-                'attr' => ['maxlength' => 32],
+            ->add('password', PasswordType::class, [
+                'label' => 'Password',
+                'required' => true,
             ]);
     }
 
@@ -59,7 +54,7 @@ class ContactType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Contact::class]);
+        $resolver->setDefaults(['data_class' => User::class]);
     }
 
     /**
@@ -72,6 +67,6 @@ class ContactType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'users';
+        return 'user';
     }
 }

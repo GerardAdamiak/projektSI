@@ -1,17 +1,17 @@
 <?php
 /**
- * Contact service interface.
+ * User service interface.
  */
 
 namespace App\Service;
 
-use App\Entity\Contact;
+use App\Entity\User;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
- * Interface ContactServiceInterface.
+ * Interface UserServiceInterface.
  */
-interface ContactServiceInterface
+interface UserServiceInterface
 {
     /**
      * Get paginated list.
@@ -25,14 +25,14 @@ interface ContactServiceInterface
     /**
      * Save entity.
      *
-     * @param Contact $contact Contact entity
+     * @param User $user User entity
      */
-    public function save(Contact $contact): void;
+    public function save(User $user): void;
 
     /**
      * Delete entity.
      *
-     * @param Contact $contact Contact entity
+     * @param User $user User entity
      */
-    public function delete(Contact $contact): void;
+    public function delete(User $user): void;
 }

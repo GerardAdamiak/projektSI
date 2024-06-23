@@ -1,34 +1,34 @@
 <?php
 /**
- * Contact controller.
+ * User controller.
  */
 
 namespace App\Controller;
 
-use App\Entity\Contact;
-use App\Form\Type\ContactType;
-use App\Service\ContactServiceInterface;
+use App\Entity\User;
+use App\Form\Type\UserType; // Ensure you have a form type for User
+use App\Service\UserServiceInterface; // Ensure the service interface is updated for User
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Class ContactController.
+ * Class UserController.
  */
 #[Route('/users')]
-class ContactController extends AbstractController
+class UserController extends AbstractController
 {
     /**
      * Constructor.
      *
-     * @param ContactServiceInterface $contactService Contact service
-     * @param TranslatorInterface     $translator     Translator
+     * @param UserServiceInterface $userService User service
+     * @param TranslatorInterface  $translator  Translator
      */
-    public function __construct(private readonly ContactServiceInterface $contactService, private readonly TranslatorInterface $translator)
+    public function __construct(private readonly UserServiceInterface $userService, private readonly TranslatorInterface $translator)
     {
     }
 
@@ -40,7 +40,7 @@ class ContactController extends AbstractController
     #[Route(name: 'user_index', methods: 'GET')]
     public function index(#[MapQueryParameter] int $page = 1): Response
     {
-        $pagination = $this->contactService->getPaginatedList($page);
+        $pagination = $this->userService->getPaginatedList($page);
 
         return $this->render('users/index.html.twig', ['pagination' => $pagination]);
     }
@@ -48,7 +48,7 @@ class ContactController extends AbstractController
     /**
      * Show action.
      *
-     * @param Contact $contact Contact entity
+     * @param User $user User entity
      *
      * @return Response HTTP response
      */
@@ -58,9 +58,9 @@ class ContactController extends AbstractController
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET'
     )]
-    public function show(Contact $contact): Response
+    public function show(User $user): Response
     {
-        return $this->render('users/show.html.twig', ['users' => $contact]);
+        return $this->render('users/show.html.twig', ['user' => $user]);
     }
 
     /**
@@ -77,12 +77,12 @@ class ContactController extends AbstractController
     )]
     public function create(Request $request): Response
     {
-        $contact = new Contact();
-        $form = $this->createForm(ContactType::class, $contact);
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->contactService->save($contact);
+            $this->userService->save($user);
 
             $this->addFlash(
                 'success',
@@ -102,29 +102,29 @@ class ContactController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param Contact $contact Contact entity
+     * @param User    $user    User entity
      *
      * @return Response HTTP response
      */
     #[Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
-    public function edit(Request $request, Contact $contact): Response
+    public function edit(Request $request, User $user): Response
     {
         $form = $this->createForm(
-            ContactType::class,
-            $contact,
+            UserType::class,
+            $user,
             [
                 'method' => 'PUT',
-                'action' => $this->generateUrl('user_edit', ['id' => $contact->getId()]),
+                'action' => $this->generateUrl('user_edit', ['id' => $user->getId()]),
             ]
         );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->contactService->save($contact);
+            $this->userService->save($user);
 
             $this->addFlash(
                 'success',
-                $this->translator->trans('message.created_successfully')
+                $this->translator->trans('message.updated_successfully')
             );
 
             return $this->redirectToRoute('user_index');
@@ -134,7 +134,7 @@ class ContactController extends AbstractController
             'users/edit.html.twig',
             [
                 'form' => $form->createView(),
-                'users' => $contact,
+                'user' => $user,
             ]
         );
     }
@@ -143,25 +143,25 @@ class ContactController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param Contact $contact Contact entity
+     * @param User    $user    User entity
      *
      * @return Response HTTP response
      */
     #[Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
-    public function delete(Request $request, Contact $contact): Response
+    public function delete(Request $request, User $user): Response
     {
         $form = $this->createForm(
             FormType::class,
-            $contact,
+            $user,
             [
                 'method' => 'DELETE',
-                'action' => $this->generateUrl('user_delete', ['id' => $contact->getId()]),
+                'action' => $this->generateUrl('user_delete', ['id' => $user->getId()]),
             ]
         );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->contactService->delete($contact);
+            $this->userService->delete($user);
 
             $this->addFlash(
                 'success',
@@ -175,7 +175,7 @@ class ContactController extends AbstractController
             'users/delete.html.twig',
             [
                 'form' => $form->createView(),
-                'users' => $contact,
+                'user' => $user,
             ]
         );
     }

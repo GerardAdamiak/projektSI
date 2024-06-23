@@ -1,20 +1,20 @@
 <?php
 /**
- * Contact service.
+ * User service.
  */
 
 namespace App\Service;
 
-use App\Entity\Contact;
-use App\Repository\ContactRepository;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
- * Class ContactService.
+ * Class UserService.
  */
-class ContactService implements ContactServiceInterface
+class UserService implements UserServiceInterface
 {
     /**
      * Items per page.
@@ -26,10 +26,10 @@ class ContactService implements ContactServiceInterface
     /**
      * Constructor.
      *
-     * @param ContactRepository  $contactRepository Contact repository
-     * @param PaginatorInterface $paginator         Paginator
+     * @param UserRepository      $userRepository User repository
+     * @param PaginatorInterface  $paginator      Paginator
      */
-    public function __construct(private readonly ContactRepository $contactRepository, private readonly PaginatorInterface $paginator)
+    public function __construct(private readonly UserRepository $userRepository, private readonly PaginatorInterface $paginator)
     {
     }
 
@@ -43,7 +43,7 @@ class ContactService implements ContactServiceInterface
     public function getPaginatedList(int $page): PaginationInterface
     {
         return $this->paginator->paginate(
-            $this->contactRepository->queryAll(),
+            $this->userRepository->queryAll(),
             $page,
             self::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -52,21 +52,20 @@ class ContactService implements ContactServiceInterface
     /**
      * Save entity.
      *
-     * @param Contact $contact Contact entity
+     * @param User $user User entity
      */
-    public function save(Contact $contact): void
+    public function save(User $user): void
     {
-        $this->contactRepository->save($contact);
+        $this->userRepository->save($user);
     }
 
     /**
      * Delete entity.
      *
-     * @param Contact $contact Contact entity
+     * @param User $user User entity
      */
-    public function delete(Contact $contact): void
+    public function delete(User $user): void
     {
-        $this->contactRepository->delete($contact);
+        $this->userRepository->delete($user);
     }
 }
-
