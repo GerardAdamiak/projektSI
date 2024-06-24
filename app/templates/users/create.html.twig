@@ -1,12 +1,12 @@
 {% block body %}
-    <h1>{{ 'Create Contact' }}</h1>
-    {{ form_start(form, { method: 'POST', action: url('contact_create') }) }}
+    <h1>{{ 'Create User' }}</h1>
+    {{ form_start(form, { method: 'POST', action: url('user_create') }) }}
     {{ form_widget(form) }}
     <div class="form-group row float-sm-right">
         <input type="submit" value="{{ 'Save' }}" class="btn btn-primary"/>
     </div>
     <div class="form-group row float-sm-left">
-        <a href="{{ path('contact_index') }}" class="btn btn-link">
+        <a href="{{ path('user_index') }}" class="btn btn-link">
             {{ 'Back to list' }}
         </a>
     </div>

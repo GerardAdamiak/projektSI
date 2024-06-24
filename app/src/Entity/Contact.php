@@ -90,7 +90,7 @@ class Contact extends User implements UserInterface, PasswordAuthenticatedUserIn
 //    }
 //
 //    /**
-//     * A visual identifier that represents this user.
+//     * A visual identifier that represents this users.
 //     *
 //     * @return string User identifier
 //     *
@@ -121,7 +121,7 @@ class Contact extends User implements UserInterface, PasswordAuthenticatedUserIn
 //    public function getRoles(): array
 //    {
 //        $roles = $this->roles;
-//        // guarantee every user at least has ROLE_USER
+//        // guarantee every users at least has ROLE_USER
 //        $roles[] = UserRole::ROLE_USER->value;
 //
 //        return array_unique($roles);
@@ -177,7 +177,7 @@ class Contact extends User implements UserInterface, PasswordAuthenticatedUserIn
 //     */
 //    public function eraseCredentials(): void
 //    {
-//        // If you store any temporary, sensitive data on the user, clear it here
+//        // If you store any temporary, sensitive data on the users, clear it here
 //        // $this->plainPassword = null;
 //    }
 }

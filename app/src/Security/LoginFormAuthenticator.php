@@ -66,13 +66,13 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     /**
      * Create a passport for the current request.
      *
-     * The passport contains the user, credentials and any additional information
+     * The passport contains the users, credentials and any additional information
      * that has to be checked by the Symfony Security system. For example, a login
-     * form authenticator will probably return a passport containing the user, the
+     * form authenticator will probably return a passport containing the users, the
      * presented password and the CSRF token value.
      *
      * You may throw any AuthenticationException in this method in case of error (e.g.
-     * a UserNotFoundException when the user cannot be found).
+     * a UserNotFoundException when the users cannot be found).
      *
      * @param Request $request HTTP request
      *
@@ -98,10 +98,10 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     /**
      * Called when authentication executed and was successful!
      *
-     * This should return the Response sent back to the user, like a
+     * This should return the Response sent back to the users, like a
      * RedirectResponse to the last page they visited.
      *
-     * If you return null, the current request will continue, and the user
+     * If you return null, the current request will continue, and the users
      * will be authenticated. This makes sense, for example, with an API.
      *
      * @param Request        $request      HTTP request

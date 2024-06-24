@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'Edit Contact' }} {{ contact.id|default('') }}
+    {{ 'Edit User' }} {{ user.id|default('') }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'Edit Contact' }} {{ contact.id|default('') }}</h1>
-    {{ form_start(form, { method: 'PUT', action: url('contact_edit', {id: contact.id}) }) }}
+    <h1>{{ 'Edit User' }} {{ user.id|default('') }}</h1>
+    {{ form_start(form, { method: 'PUT', action: url('user_edit', {id: user.id}) }) }}
     {{ form_widget(form) }}
     <div class="form-group row float-sm-right">
         <input type="submit" value="{{ 'Save' }}" class="btn btn-primary" />
     </div>
     <div class="form-group row float-sm-left">
-        <a href="{{ url('contact_index') }}" class="btn btn-link">
+        <a href="{{ url('user_index') }}" class="btn btn-link">
             {{ 'Back to list' }}
         </a>
     </div>

@@ -45,6 +45,7 @@ class UserType extends AbstractType
                 'label' => 'Password',
                 'required' => true,
             ]);
+
     }
 
     /**
@@ -67,6 +68,6 @@ class UserType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'user';
+        return 'users';
     }
 }

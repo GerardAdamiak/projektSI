@@ -5,7 +5,9 @@
 
 namespace App\Controller;
 
+
 use App\Entity\User;
+
 use App\Form\Type\UserType; // Ensure you have a form type for User
 use App\Service\UserServiceInterface; // Ensure the service interface is updated for User
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -60,7 +62,7 @@ class UserController extends AbstractController
     )]
     public function show(User $user): Response
     {
-        return $this->render('users/show.html.twig', ['user' => $user]);
+        return $this->render('users/show.html.twig', ['users' => $user]);
     }
 
     /**
@@ -70,15 +72,17 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(
-        '/create',
-        name: 'user_create',
-        methods: 'GET|POST',
-    )]
+    #[\Symfony\Component\Routing\Attribute\Route('/create', name: 'user_create', methods: 'GET|POST')]
     public function create(Request $request): Response
     {
+
+
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(
+            UserType::class,
+            $user,
+            ['action' => $this->generateUrl('user_create')]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -134,7 +138,7 @@ class UserController extends AbstractController
             'users/edit.html.twig',
             [
                 'form' => $form->createView(),
-                'user' => $user,
+                'users' => $user,
             ]
         );
     }
@@ -175,7 +179,7 @@ class UserController extends AbstractController
             'users/delete.html.twig',
             [
                 'form' => $form->createView(),
-                'user' => $user,
+                'users' => $user,
             ]
         );
     }

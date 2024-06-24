@@ -1,16 +1,16 @@
 {% block title %}
-    {{ 'Delete Contact' }} {{ contact.id|default('') }}
+    {{ 'Delete User' }} {{ user.id|default('') }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'Delete Contact' }} {{ contact.id|default('') }}</h1>
-    {{ form_start(form, { method: 'DELETE', action: url('contact_delete', {id: contact.id}) }) }}
+    <h1>{{ 'Delete User' }} {{ user.id|default('') }}</h1>
+    {{ form_start(form, { method: 'DELETE', action: url('user_delete', {id: user.id}) }) }}
     {{ form_widget(form) }}
     <div class="form-group row float-sm-right">
         <input type="submit" value="{{ 'Delete' }}" class="btn btn-danger" />
     </div>
     <div class="form-group row float-sm-left">
-        <a href="{{ url('contact_index') }}" class="btn btn-link">
+        <a href="{{ url('user_index') }}" class="btn btn-link">
             {{ 'Back to list' }}
         </a>
     </div>

@@ -1,6 +1,3 @@
-body {
-    background-color: skyblue;
-}
 .right_element {
     background-color: navy !important; /* Force the background color to navy */
     color: white; /* Optional: Set text color to white for better contrast */

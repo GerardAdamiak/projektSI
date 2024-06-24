@@ -39,7 +39,7 @@ docker-compose exec php bash
 ```bash
 cd app
 rm .gitkeep
-git config --global user.email "you@example.com"
+git config --global users.email "you@example.com"
 symfony new ../app --version=lts --webapp
 chown -R dev.dev *
 ```
