@@ -10,6 +10,7 @@ use App\Dto\PostListInputFiltersDto;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Repository\PostRepository;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 

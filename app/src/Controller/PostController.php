@@ -71,14 +71,6 @@ class PostController extends AbstractController
     #[Route('/{id}', name: 'post_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
     public function show(Post $post): Response
     {
-        if ($post->getAuthor() !== $this->getUser()) {
-            $this->addFlash(
-                'warning',
-                $this->translator->trans('message.record_not_found')
-            );
-
-            return $this->redirectToRoute('post_index');
-        }
 
         return $this->render(
             'post/show.html.twig',
@@ -135,14 +127,7 @@ class PostController extends AbstractController
     #[Route('/{id}/edit', name: 'post_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     public function edit(Request $request, Post $post): Response
     {
-        if ($post->getAuthor() !== $this->getUser()) {
-            $this->addFlash(
-                'warning',
-                $this->translator->trans('message.record_not_found')
-            );
 
-            return $this->redirectToRoute('post_index');
-        }
 
         $form = $this->createForm(
             PostType::class,
@@ -223,4 +208,7 @@ class PostController extends AbstractController
             ]
         );
     }
+
+
+
 }

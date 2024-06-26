@@ -6,6 +6,7 @@
 namespace App\Entity;
 
 use App\Repository\PostRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -19,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Table(name: 'posts')]
 class Post
 {
+
     /**
      * Primary key.
      */
@@ -32,14 +34,14 @@ class Post
      */
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'create')]
-    private ?\DateTimeImmutable $createdAt = null;
+    private ?DateTimeImmutable $createdAt = null;
 
     /**
      * Updated at.
      */
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'update')]
-    private ?\DateTimeImmutable $updatedAt = null;
+    private ?DateTimeImmutable $updatedAt = null;
 
     /**
      * Title.
@@ -74,14 +76,15 @@ class Post
      */
     #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\NotNull]
-    private ?\DateTimeImmutable $postDate = null;
+    private ?DateTimeImmutable $postDate = null;
 
     /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->postDate = new \DateTimeImmutable();
+        $this->postDate = new DateTimeImmutable();
+      //  $this->comments = new ArrayCollection();
     }
 
     /**
@@ -97,9 +100,9 @@ class Post
     /**
      * Getter for created at.
      *
-     * @return \DateTimeImmutable|null Created at
+     * @return DateTimeImmutable|null Created at
      */
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -107,9 +110,9 @@ class Post
     /**
      * Setter for created at.
      *
-     * @param \DateTimeImmutable|null $createdAt Created at
+     * @param DateTimeImmutable|null $createdAt Created at
      */
-    public function setCreatedAt(?\DateTimeImmutable $createdAt): void
+    public function setCreatedAt(?DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -117,9 +120,9 @@ class Post
     /**
      * Getter for updated at.
      *
-     * @return \DateTimeImmutable|null Updated at
+     * @return DateTimeImmutable|null Updated at
      */
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?DateTimeImmutable
     {
         return $this->updatedAt;
     }
@@ -127,9 +130,9 @@ class Post
     /**
      * Setter for updated at.
      *
-     * @param \DateTimeImmutable|null $updatedAt Updated at
+     * @param DateTimeImmutable|null $updatedAt Updated at
      */
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): void
+    public function setUpdatedAt(?DateTimeImmutable $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -219,9 +222,9 @@ class Post
     /**
      * Getter for post date.
      *
-     * @return \DateTimeImmutable|null Post date
+     * @return DateTimeImmutable|null Post date
      */
-    public function getPostDate(): ?\DateTimeImmutable
+    public function getPostDate(): ?DateTimeImmutable
     {
         return $this->postDate;
     }
@@ -229,10 +232,15 @@ class Post
     /**
      * Setter for post date.
      *
-     * @param \DateTimeImmutable|null $postDate Post date
+     * @param DateTimeImmutable|null $postDate Post date
      */
-    public function setPostDate(?\DateTimeImmutable $postDate): void
+    public function setPostDate(?DateTimeImmutable $postDate): void
     {
-        $this->postDate = $postDate ?: new \DateTimeImmutable();
+        $this->postDate = $postDate ?: new DateTimeImmutable();
     }
+
+
+
+
+
 }
