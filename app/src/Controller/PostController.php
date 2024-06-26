@@ -30,7 +30,7 @@ class PostController extends AbstractController
      * Constructor.
      *
      * @param PostServiceInterface $postService Post service
-     * @param TranslatorInterface $translator Translator
+     * @param TranslatorInterface  $translator  Translator
      */
     public function __construct(private readonly PostServiceInterface $postService, private readonly TranslatorInterface $translator)
     {
@@ -40,7 +40,7 @@ class PostController extends AbstractController
      * Index action.
      *
      * @param PostListInputFiltersDto $filters Input filters
-     * @param int                      $page    Page number
+     * @param int                     $page    Page number
      *
      * @return Response HTTP response
      */
@@ -60,7 +60,6 @@ class PostController extends AbstractController
 
         return $this->render('post/index.html.twig', ['pagination' => $pagination]);
     }
-
 
     /**
      * Show action.
@@ -86,7 +85,6 @@ class PostController extends AbstractController
             ['post' => $post]
         );
     }
-
 
     /**
      * Create action.
@@ -130,7 +128,7 @@ class PostController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param Post $post Post entity
+     * @param Post    $post    Post entity
      *
      * @return Response HTTP response
      */
@@ -180,7 +178,7 @@ class PostController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param Post $post Post entity
+     * @param Post    $post    Post entity
      *
      * @return Response HTTP response
      */

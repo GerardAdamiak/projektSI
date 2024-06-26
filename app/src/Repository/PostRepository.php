@@ -129,7 +129,7 @@ class PostRepository extends ServiceEntityRepository
     /**
      * Query posts by author.
      *
-     * @param UserInterface       $user    User entity
+     * @param UserInterface      $user    User entity
      * @param PostListFiltersDto $filters Filters
      *
      * @return QueryBuilder Query builder
@@ -176,11 +176,10 @@ class PostRepository extends ServiceEntityRepository
         return $this->applyFiltersToList($queryBuilder, $filters);
     }
 
-
     /**
      * Apply filters to paginated list.
      *
-     * @param QueryBuilder        $queryBuilder Query builder
+     * @param QueryBuilder       $queryBuilder Query builder
      * @param PostListFiltersDto $filters      Filters
      *
      * @return QueryBuilder Query builder

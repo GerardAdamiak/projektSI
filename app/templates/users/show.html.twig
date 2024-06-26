@@ -9,18 +9,14 @@
     <a href="{{ url('user_edit', {id: user.id}) }}" title="{{ 'Edit' }}">
         {{ 'Edit' }}
     </a>
-    {% if contact is defined and contact %}
+    {% if user is defined %}
         <dl class="dl-horizontal">
             <dt>{{ 'ID' }}</dt>
             <dd>{{ user.id }}</dd>
-            <dt>{{ 'Name' }}</dt>
-            <dd>{{ user.name }}</dd>
-            <dt>{{ 'Surname' }}</dt>
-            <dd>{{ user.surname }}</dd>
-            <dt>{{ 'Phone' }}</dt>
-            <dd>{{ user.phone }}</dd>
-            <dt>{{ 'Address' }}</dt>
-            <dd>{{ user.address }}</dd>
+            <dt>{{ 'Email' }}</dt>
+            <dd>{{ user.email }}</dd>
+            <dt>{{ 'Roles' }}</dt>
+            <dd>{{ user.roles|join(', ') }}</dd>
         </dl>
         <p>
             <a href="{{ url('user_index') }}" title="{{ 'Back to list' }}">
@@ -29,7 +25,7 @@
         </p>
     {% else %}
         <p>
-            {{ 'Contact not found.' }}
+            {{ 'User not found.' }}
         </p>
     {% endif %}
 {% endblock %}

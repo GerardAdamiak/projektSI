@@ -36,7 +36,8 @@ class CategoryType extends AbstractType
                 'label' => 'Category Title', // Zmieniona etykieta na "Category Title"
                 'required' => true,
                 'attr' => ['max_length' => 64],
-            ]);
+            ]
+        );
     }
 
     /**

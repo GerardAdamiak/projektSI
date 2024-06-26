@@ -29,21 +29,17 @@ class Post
 
     /**
      * Created at.
-     *
-     * @var \DateTimeImmutable|null
      */
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'create')]
-    private ?\DateTimeImmutable $createdAt;
+    private ?\DateTimeImmutable $createdAt = null;
 
     /**
      * Updated at.
-     *
-     * @var \DateTimeImmutable|null
      */
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'update')]
-    private ?\DateTimeImmutable $updatedAt;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     /**
      * Title.
@@ -52,7 +48,7 @@ class Post
     private ?string $title = null;
 
     /**
-     * Content
+     * Content.
      */
     #[ORM\Column(type: 'string', length: 1000)]
     private ?string $content = null;
@@ -71,12 +67,10 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Type(User::class)]
-    private ?User $author;
+    private ?User $author = null;
 
     /**
      * Post date.
-     *
-     * @var \DateTimeImmutable|null
      */
     #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\NotNull]
@@ -172,12 +166,10 @@ class Post
 
     /**
      * Setter for content.
-     *
-     * @param string|null $content
      */
     public function setContent(?string $content): void
     {
-        $this-> content = $content;
+        $this->content = $content;
     }
 
     /**
@@ -194,8 +186,6 @@ class Post
      * Setter for category.
      *
      * @param Category|null $category Category
-     *
-     * @return static
      */
     public function setCategory(?Category $category): static
     {
@@ -218,8 +208,6 @@ class Post
      * Setter for author.
      *
      * @param User|null $author Author
-     *
-     * @return static
      */
     public function setAuthor(?User $author): static
     {

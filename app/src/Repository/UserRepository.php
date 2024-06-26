@@ -2,9 +2,11 @@
 
 namespace App\Repository;
 
-use App\Dto\PostListFiltersDto;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -42,10 +44,37 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->orderBy('users.id', 'DESC');
     }
 
-
     private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('users');
+    }
+
+    /**
+     * Save entity.
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function save(User $user): void
+    {
+        assert($this->_em instanceof EntityManager);
+        $this->_em->persist($user);
+        $this->_em->flush();
+    }
+
+    /**
+     * Delete entity.
+     *
+     * @param User $user Post entity
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(User $user): void
+    {
+        assert($this->_em instanceof EntityManager);
+        $this->_em->remove($user);
+        $this->_em->flush();
     }
     //    /**
     //     * @return User[] Returns an array of User objects

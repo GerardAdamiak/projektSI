@@ -49,6 +49,7 @@ class CategoryService implements CategoryServiceInterface
             self::PAGINATOR_ITEMS_PER_PAGE
         );
     }
+
     /**
      * Save entity.
      *
@@ -58,10 +59,12 @@ class CategoryService implements CategoryServiceInterface
     {
         $this->categoryRepository->save($category);
     }
+
     public function delete(Category $category): void
     {
         $this->categoryRepository->delete($category);
     }
+
     /**
      * Can Category be deleted?
      *
@@ -74,11 +77,12 @@ class CategoryService implements CategoryServiceInterface
         try {
             $result = $this->postRepository->countByCategory($category);
 
-            return !($result > 0);
+            return $result <= 0;
         } catch (NoResultException|NonUniqueResultException) {
             return false;
         }
     }
+
     /**
      * Find by id.
      *

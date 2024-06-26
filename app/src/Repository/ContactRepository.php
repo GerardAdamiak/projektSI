@@ -2,6 +2,7 @@
 /**
  * Contact repository.
  */
+
 namespace App\Repository;
 
 use App\Entity\Contact;
@@ -49,7 +50,7 @@ class ContactRepository extends ServiceEntityRepository
      *
      * @return QueryBuilder Query builder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('users');
     }
@@ -70,6 +71,7 @@ class ContactRepository extends ServiceEntityRepository
      * Delete entity.
      *
      * @param Contact $contact Contact entity
+     *
      * @throws ORMException
      */
     public function delete(Contact $contact): void

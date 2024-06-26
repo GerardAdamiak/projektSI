@@ -39,7 +39,8 @@ class PostType extends AbstractType
                 'label' => 'Title', // Zmieniona etykieta na "Title"
                 'required' => true,
                 'attr' => ['max_length' => 255],
-            ]);
+            ]
+        );
         $builder->add(
             'content',
             TextType::class,
@@ -47,15 +48,14 @@ class PostType extends AbstractType
                 'label' => 'Content',
                 'required' => true,
                 'attr' => ['max_length' => 1000],
-            ]);
+            ]
+        );
         $builder->add(
             'category',
             EntityType::class,
             [
                 'class' => Category::class,
-                'choice_label' => function ($category): string {
-                    return $category->getTitle();
-                },
+                'choice_label' => fn($category): string => $category->getTitle(),
                 'label' => 'Category',
                 'placeholder' => 'label.none',
                 'required' => true,
@@ -71,7 +71,6 @@ class PostType extends AbstractType
                 'attr' => ['class' => 'js-datepicker'],
             ]
         );
-
     }
 
     /**

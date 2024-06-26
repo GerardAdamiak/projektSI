@@ -5,9 +5,7 @@
 
 namespace App\Controller;
 
-
 use App\Entity\User;
-
 use App\Form\Type\UserType; // Ensure you have a form type for User
 use App\Service\UserServiceInterface; // Ensure the service interface is updated for User
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,11 +15,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Class UserController.
  */
-#[Route('/users')]
+#[\Symfony\Component\Routing\Attribute\Route('/users')]
 class UserController extends AbstractController
 {
     /**
@@ -39,7 +38,7 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(name: 'user_index', methods: 'GET')]
+    #[\Symfony\Component\Routing\Attribute\Route(name: 'user_index', methods: 'GET')]
     public function index(#[MapQueryParameter] int $page = 1): Response
     {
         $pagination = $this->userService->getPaginatedList($page);
@@ -50,11 +49,11 @@ class UserController extends AbstractController
     /**
      * Show action.
      *
-     * @param User $user User entity
+     * @param User $user User
      *
      * @return Response HTTP response
      */
-    #[Route(
+    #[\Symfony\Component\Routing\Attribute\Route(
         '/{id}',
         name: 'user_show',
         requirements: ['id' => '[1-9]\d*'],
@@ -62,7 +61,7 @@ class UserController extends AbstractController
     )]
     public function show(User $user): Response
     {
-        return $this->render('users/show.html.twig', ['users' => $user]);
+        return $this->render('users/show.html.twig', ['user' => $user]);
     }
 
     /**
@@ -73,10 +72,8 @@ class UserController extends AbstractController
      * @return Response HTTP response
      */
     #[\Symfony\Component\Routing\Attribute\Route('/create', name: 'user_create', methods: 'GET|POST')]
-    public function create(Request $request): Response
+    public function create(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
-
-
         $user = new User();
         $form = $this->createForm(
             UserType::class,
@@ -86,6 +83,12 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $plaintextPassword = $user->getPassword();
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $plaintextPassword
+            );
+            $user->setPassword($hashedPassword);
             $this->userService->save($user);
 
             $this->addFlash(
@@ -110,8 +113,8 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
-    public function edit(Request $request, User $user): Response
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    public function edit(Request $request, User $user, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(
             UserType::class,
@@ -124,6 +127,12 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $plaintextPassword = $user->getPassword();
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $plaintextPassword
+            );
+            $user->setPassword($hashedPassword);
             $this->userService->save($user);
 
             $this->addFlash(
@@ -138,7 +147,7 @@ class UserController extends AbstractController
             'users/edit.html.twig',
             [
                 'form' => $form->createView(),
-                'users' => $user,
+                'user' => $user, // Ensure 'user' is passed, not 'users'
             ]
         );
     }
@@ -151,7 +160,7 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     public function delete(Request $request, User $user): Response
     {
         $form = $this->createForm(
@@ -179,7 +188,7 @@ class UserController extends AbstractController
             'users/delete.html.twig',
             [
                 'form' => $form->createView(),
-                'users' => $user,
+                'user' => $user,
             ]
         );
     }

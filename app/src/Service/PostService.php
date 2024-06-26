@@ -27,7 +27,6 @@ class PostService implements PostServiceInterface
      *
      * @constant int
      */
-
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
@@ -35,7 +34,7 @@ class PostService implements PostServiceInterface
      *
      * @param CategoryServiceInterface $categoryService Category service
      * @param PaginatorInterface       $paginator       Paginator
-     * @param PostRepository          $postRepository Post repository
+     * @param PostRepository           $postRepository  Post repository
      */
     public function __construct(private readonly CategoryServiceInterface $categoryService, private readonly PaginatorInterface $paginator, private readonly PostRepository $postRepository)
     {
@@ -44,8 +43,8 @@ class PostService implements PostServiceInterface
     /**
      * Get paginated list.
      *
-     * @param int                      $page    Page number
-     * @param User                     $author  Post author
+     * @param int                     $page    Page number
+     * @param User                    $author  Post author
      * @param PostListInputFiltersDto $filters Filters
      *
      * @return PaginationInterface<SlidingPagination> Paginated list

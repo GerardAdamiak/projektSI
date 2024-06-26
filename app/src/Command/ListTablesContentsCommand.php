@@ -1,6 +1,7 @@
 <?php
 
 // src/Command/ListTablesContentsCommand.php
+
 namespace App\Command;
 
 use Doctrine\DBAL\Connection;
@@ -12,11 +13,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class ListTablesContentsCommand extends Command
 {
     protected static $defaultName = 'app:list-tables-contents';
-    private $connection;
 
-    public function __construct(Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
-        $this->connection = $connection;
         parent::__construct();
     }
 
@@ -35,6 +34,7 @@ class ListTablesContentsCommand extends Command
 
         if (empty($tables)) {
             $io->warning('No tables found in the database.');
+
             return Command::SUCCESS;
         }
 
