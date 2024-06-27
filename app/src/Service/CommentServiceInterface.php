@@ -20,7 +20,7 @@ interface CommentServiceInterface
      * Get paginated list.
      *
      * @param int  $page   Page number
-     * @param User $author Author
+     *
      *
      * @return PaginationInterface<string, mixed> Paginated list
      */

@@ -40,6 +40,14 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+    public function queryByPost(int $postId): QueryBuilder
+    {
+        return $this->createQueryBuilder('comment')
+            ->where('comment.post = :postId')
+            ->setParameter('postId', $postId)
+            ->orderBy('comment.id', 'DESC');
+    }
+
     /**
      * Query all records.
      *

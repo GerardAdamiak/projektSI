@@ -5,6 +5,7 @@
 
 namespace App\Entity;
 
+use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;

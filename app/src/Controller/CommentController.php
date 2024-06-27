@@ -45,11 +45,9 @@ class CommentController extends AbstractController
     public function index(#[MapQueryString(resolver: PostListInputFiltersDtoResolver::class)] PostListInputFiltersDto $filters, #[MapQueryParameter] int $page = 1): Response
     {
         /** @var User $user */
-        $user = $this->getUser();
+        $post = $this->getUser();
         $pagination = $this->commentService->getPaginatedList(
             $page,
-
-
             $filters
         );
 
