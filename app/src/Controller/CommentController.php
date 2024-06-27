@@ -82,6 +82,7 @@ class CommentController extends AbstractController
     public function create(Request $request): Response
     {
         $comment = new Comment();
+
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
@@ -154,14 +155,7 @@ class CommentController extends AbstractController
     #[Route('/{id}/delete', name: 'comment_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     public function delete(Request $request, Comment $comment): Response
     {
-        if ($comment->getAuthor() !== $this->getUser()) {
-            $this->addFlash(
-                'warning',
-                $this->translator->trans('message.record_not_found')
-            );
 
-            return $this->redirectToRoute('comment_index');
-        }
 
         $form = $this->createForm(
             FormType::class,

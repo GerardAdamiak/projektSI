@@ -23,6 +23,13 @@
             <dt>Content</dt>
             <dd>{{ post.content}}</dd>
         </dl>
+
+        <p>
+            <a class="btn btn-outline-primary" href="{{ url('comment_create', {id: post.id}) }}" title="{{ 'comment_create'|trans }}">
+                {{ 'action.comment_create'|trans }}
+            </a>
+        </p>
+
         <p>
             <a href="{{ path('post_index') }}" title="Back to list">
                 Back to list
