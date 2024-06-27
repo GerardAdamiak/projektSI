@@ -1,98 +1,55 @@
 <?php
 
+/**
+ * Comment repository.
+ */
+
 namespace App\Repository;
 
-use App\Dto\PostListFiltersDto;
-use App\Entity\Category;
 use App\Entity\Comment;
+use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Class PostRepository.
- *
- * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
- * @method Comment|null findOneBy(array $criteria, array $orderBy = null)
- * @method Comment[]    findAll()
- * @method Comment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- *
  * @extends ServiceEntityRepository<Comment>
  */
 class CommentRepository extends ServiceEntityRepository
 {
-    public const PAGINATOR_ITEMS_PER_PAGE = 10;
-
-
     /**
-     * Constructor.
-     *
-     * @param ManagerRegistry $registry Manager registry
+     * @param ManagerRegistry $registry Manager Registry
      */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
     }
 
-    public function queryByPost(int $postId): QueryBuilder
-    {
-        return $this->createQueryBuilder('comment')
-            ->where('comment.post = :postId')
-            ->setParameter('postId', $postId)
-            ->orderBy('comment.id', 'DESC');
-    }
-
     /**
-     * Query all records.
+     * Query all comments by post.
      *
-     * @param PostListFiltersDto $filters Filters
+     * @param Post $post Post entity
      *
-     * @return QueryBuilder Query builder
+     * @return QueryBuilder QueryBuilder
      */
-    public function queryAll(PostListFiltersDto $filters): QueryBuilder
+    public function queryAllByPost(Post $post): QueryBuilder
     {
-        $queryBuilder = $this->getOrCreateQueryBuilder()
+        $queryBuilder = $this->createQueryBuilder('comment')
             ->select(
-                'comment.id',
-                'comment.email',
-                'comment.nick',
-                'comment.content'
+                'partial comment.{id, nick, email, content}'
             )
+            ->andWhere('comment.post = :post')
+            ->setParameter('post', $post)
             ->orderBy('comment.id', 'DESC');
 
-        return $this->applyFiltersToList($queryBuilder, $filters);
-    }
-
-
-
-    /**
-     * Save entity.
-     *
-     * @param Comment $comment comment entity
-     *
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function save(Comment $comment): void
-    {
-        assert($this->_em instanceof EntityManager);
-        $this->_em->persist($comment);
-        $this->_em->flush();
+        return $queryBuilder;
     }
 
     /**
      * Delete entity.
      *
-     * @param Comment $comment comment entity
-     *
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @param Comment $comment Comment entity
      */
     public function delete(Comment $comment): void
     {
@@ -102,45 +59,46 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get or create new query builder.
+     * Save entity.
      *
-     * @param QueryBuilder|null $queryBuilder Query builder
+     * @param Comment $comment Post entity
+     */
+    public function save(Comment $comment): void
+    {
+        assert($this->_em instanceof EntityManager);
+        $this->_em->persist($comment);
+        $this->_em->flush();
+    }
+
+    /**
+     * @param Post $post Post
      *
-     * @return QueryBuilder Query builder
+     * @return QueryBuilder QueryBuilder
+     */
+    public function findByPost(Post $post): QueryBuilder
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('comment.post = :post')
+            ->setParameter('post', $post);
+    }
+
+    //    public function findOneBySomeField($value): ?Comment
+    //    {
+    //        return $this->createQueryBuilder('c')
+    //            ->andWhere('c.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    /**
+     * @param QueryBuilder|null $queryBuilder QueryBuilder
+     *
+     * @return QueryBuilder QueryBuilder
      */
     private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('comment');
-    }
-
-    /**
-     * Query comments by author.
-     *
-     * @param UserInterface      $user    User entity
-     * @param PostListFiltersDto $filters Filters
-     *
-     * @return QueryBuilder Query builder
-     */
-
-
-
-
-
-    /**
-     * Apply filters to paginated list.
-     *
-     * @param QueryBuilder       $queryBuilder Query builder
-     * @param PostListFiltersDto $filters      Filters
-     *
-     * @return QueryBuilder Query builder
-     */
-    private function applyFiltersToList(QueryBuilder $queryBuilder, PostListFiltersDto $filters): QueryBuilder
-    {
-        if ($filters->category instanceof Category) {
-            $queryBuilder->andWhere('category = :category')
-                ->setParameter('category', $filters->category);
-        }
-
-        return $queryBuilder;
     }
 }

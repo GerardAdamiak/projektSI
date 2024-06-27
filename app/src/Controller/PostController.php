@@ -9,8 +9,10 @@ use App\Dto\PostListInputFiltersDto;
 use App\Entity\Post;
 use App\Entity\User;
 use App\Form\Type\PostType;
+use App\Repository\CommentRepository;
 use App\Resolver\PostListInputFiltersDtoResolver;
 use App\Service\PostServiceInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,21 +63,22 @@ class PostController extends AbstractController
         return $this->render('post/index.html.twig', ['pagination' => $pagination]);
     }
 
-    /**
-     * Show action.
-     *
-     * @param Post $post Post entity
-     *
-     * @return Response HTTP response
-     */
-    #[Route('/{id}', name: 'post_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
-    public function show(Post $post): Response
+    #[Route('/post/{id}', name: 'post_show', methods: ['GET'])]
+    public function show(Post $post, CommentRepository $commentRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $queryBuilder = $commentRepository->queryAllByPost($post);
+        $page = $request->query->getInt('page', 1);
 
-        return $this->render(
-            'post/show.html.twig',
-            ['post' => $post]
+        $commentPagination = $paginator->paginate(
+            $queryBuilder,
+            $page,
+            10 // number of comments per page
         );
+
+        return $this->render('post/show.html.twig', [
+            'post' => $post,
+            'commentPagination' => $commentPagination,
+        ]);
     }
 
     /**
