@@ -244,6 +244,10 @@
         <source>label.roles</source>
         <target>Roles</target>
       </trans-unit>
+      <trans-unit id="message.category_contains_tasks">
+        <source>message.category_contains_tasks</source>
+        <target>Category contains posts</target>
+      </trans-unit>
 
 
     </body>
