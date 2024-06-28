@@ -27,7 +27,6 @@ class Post
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    #[Assert\NotNull]
     private ?int $id = null;
 
     /**
@@ -35,7 +34,6 @@ class Post
      */
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'create')]
-    #[Assert\NotNull]
     #[Assert\Type(\DateTimeImmutable::class)]
     private ?DateTimeImmutable $createdAt = null;
 
@@ -44,7 +42,6 @@ class Post
      */
     #[ORM\Column(type: 'datetime_immutable')]
     #[Gedmo\Timestampable(on: 'update')]
-    #[Assert\NotNull]
     #[Assert\Type(\DateTimeImmutable::class)]
     private ?DateTimeImmutable $updatedAt = null;
 
@@ -77,7 +74,6 @@ class Post
      */
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank]
     #[Assert\Type(User::class)]
     private ?User $author = null;
 
@@ -85,7 +81,6 @@ class Post
      * Post date.
      */
     #[ORM\Column(type: 'datetime_immutable')]
-    #[Assert\NotNull]
     private ?DateTimeImmutable $postDate = null;
 
     /**

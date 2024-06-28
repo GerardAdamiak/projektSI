@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -39,6 +40,7 @@ class UserController extends AbstractController
      * @return Response HTTP response
      */
     #[\Symfony\Component\Routing\Attribute\Route(name: 'user_index', methods: 'GET')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(#[MapQueryParameter] int $page = 1): Response
     {
         $pagination = $this->userService->getPaginatedList($page);
@@ -72,6 +74,7 @@ class UserController extends AbstractController
      * @return Response HTTP response
      */
     #[\Symfony\Component\Routing\Attribute\Route('/create', name: 'user_create', methods: 'GET|POST')]
+    #[IsGranted('ROLE_ADMIN')]
     public function create(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
@@ -114,6 +117,7 @@ class UserController extends AbstractController
      * @return Response HTTP response
      */
     #[\Symfony\Component\Routing\Attribute\Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, User $user, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(
@@ -161,6 +165,7 @@ class UserController extends AbstractController
      * @return Response HTTP response
      */
     #[\Symfony\Component\Routing\Attribute\Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, User $user): Response
     {
         $form = $this->createForm(

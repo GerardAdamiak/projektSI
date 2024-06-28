@@ -10,6 +10,7 @@ use App\Entity\Comment;
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -50,6 +51,7 @@ class CommentRepository extends ServiceEntityRepository
      * Delete entity.
      *
      * @param Comment $comment Comment entity
+     * @throws ORMException
      */
     public function delete(Comment $comment): void
     {
@@ -62,6 +64,7 @@ class CommentRepository extends ServiceEntityRepository
      * Save entity.
      *
      * @param Comment $comment Post entity
+     * @throws ORMException
      */
     public function save(Comment $comment): void
     {
