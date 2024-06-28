@@ -170,15 +170,15 @@
             </trans-unit>
             <trans-unit id="title.comment_create">
                 <source>title.comment_create</source>
-                <target>Dodaj kometarz</target>
+                <target>Dodaj komentarz</target>
             </trans-unit>
             <trans-unit id="title.comment_delete">
                 <source>title.comment_delete</source>
-                <target>Usuń kometarz</target>
+                <target>Usuń komentarz</target>
             </trans-unit>
             <trans-unit id="action.comment_create">
                 <source>action.comment_create</source>
-                <target>Dodaj kometarz</target>
+                <target>Dodaj komentarz</target>
             </trans-unit>
             <trans-unit id="action.homepage">
                 <source>action.homepage</source>
@@ -247,6 +247,78 @@
             <trans-unit id="message.category_contains_tasks">
                 <source>message.category_contains_tasks</source>
                 <target>Kategoria zawiera posty</target>
+            </trans-unit>
+            <trans-unit id="message.updated_successfully">
+                <source>message.updated_successfully</source>
+                <target>Zmiana się udała</target>
+            </trans-unit>
+            <trans-unit id="welcome">
+                <source>welcome</source>
+                <target>Witaj</target>
+            </trans-unit>
+            <trans-unit id="mainpage">
+                <source>mainpage</source>
+                <target>Strona Główna</target>
+            </trans-unit>
+            <trans-unit id="posts">
+                <source>posts</source>
+                <target>Posty</target>
+            </trans-unit>
+            <trans-unit id="users">
+                <source>users</source>
+                <target>Użytkownicy</target>
+            </trans-unit>
+            <trans-unit id="categories">
+                <source>categories</source>
+                <target>Kategorie</target>
+            </trans-unit>
+            <trans-unit id="logout">
+                <source>logout</source>
+                <target>Wyloguj się</target>
+            </trans-unit>
+            <trans-unit id="category.create">
+                <source>category.create</source>
+                <target>Stwórz Kategorię</target>
+            </trans-unit>
+            <trans-unit id="category.delete">
+                <source>category.delete</source>
+                <target>Usuń Kategorię</target>
+            </trans-unit>
+            <trans-unit id="category.edit">
+                <source>category.edit</source>
+                <target>Edytuj Kategorię</target>
+            </trans-unit>
+            <trans-unit id="category.list">
+                <source>category.list</source>
+                <target>Lista Kategorii</target>
+            </trans-unit>
+            <trans-unit id="users.list">
+                <source>users.list</source>
+                <target>Lista Użytkowników</target>
+            </trans-unit>
+            <trans-unit id="user.add">
+                <source>user.add</source>
+                <target>Dodaj Użytkownika</target>
+            </trans-unit>
+            <trans-unit id="category.detail">
+                <source>category.detail</source>
+                <target>Szczegóły Kategorii</target>
+            </trans-unit>
+            <trans-unit id="category.add">
+                <source>category.add</source>
+                <target>Dodaj Kategorię</target>
+            </trans-unit>
+            <trans-unit id="post.add">
+                <source>post.add</source>
+                <target>Dodaj Post</target>
+            </trans-unit>
+            <trans-unit id="backtolist">
+                <source>backtolist</source>
+                <target>Powrót do listy</target>
+            </trans-unit>
+            <trans-unit id="remember">
+                <source>remember</source>
+                <target>Zapamiętaj mnie</target>
             </trans-unit>
 
         </body>

@@ -6,6 +6,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\Type\PasswordType;
 use App\Form\Type\UserType; // Ensure you have a form type for User
 use App\Service\UserServiceInterface; // Ensure the service interface is updated for User
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -155,6 +156,55 @@ class UserController extends AbstractController
             ]
         );
     }
+
+    /**
+     * Edit action.
+     *
+     * @param Request $request HTTP request
+     * @param User    $user    User entity
+     *
+     * @return Response HTTP response
+     */
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/password', name: 'user_password', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function editPassword(Request $request, User $user, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        $form = $this->createForm(
+            PasswordType::class,
+            $user,
+            [
+                'method' => 'PUT',
+                'action' => $this->generateUrl('user_password', ['id' => $user->getId()]),
+            ]
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $plaintextPassword = $user->getPassword();
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $plaintextPassword
+            );
+            $user->setPassword($hashedPassword);
+            $this->userService->save($user);
+
+            $this->addFlash(
+                'success',
+                $this->translator->trans('message.updated_successfully')
+            );
+
+            return $this->redirectToRoute('user_index');
+        }
+
+        return $this->render(
+            'users/password.html.twig',
+            [
+                'form' => $form->createView(),
+                'user' => $user, // Ensure 'user' is passed, not 'users'
+            ]
+        );
+    }
+
 
     /**
      * Delete action.

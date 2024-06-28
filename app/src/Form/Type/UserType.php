@@ -46,10 +46,11 @@ class UserType extends AbstractType
                     // Add more roles as needed
                 ],
             ])
-            ->add('password', PasswordType::class, [
-                'label' => 'Password',
-                'required' => true,
-            ]);
+//            ->add('password', PasswordType::class, [
+//                'label' => 'Password',
+//                'required' => true,
+//            ])
+        ;
     }
 
     /**

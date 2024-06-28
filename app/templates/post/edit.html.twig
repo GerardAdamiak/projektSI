@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Edit Post {{ post.id|default('') }}
+    {{ 'title.post_edit'|trans }} {{ post.id|default('') }}
 {% endblock %}
 
 {% block body %}
-    <h1>Edit Post {{ post.id|default('') }}</h1>
+    <h1>{{ 'title.post_edit'|trans }} {{ post.id|default('') }}</h1>
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <div class="form-group row float-sm-right">
-        <input type="submit" value="Save" class="btn btn-primary"/>
+        <input type="submit" value="{{ 'action.save'|trans }}" class="btn btn-primary"/>
     </div>
     <div class="form-group row float-sm-left">
         <a href="{{ path('post_index') }}" class="btn btn-link">
-            Back to list
+            {{ 'action.back_to_list'|trans }}
         </a>
     </div>
     {{ form_end(form) }}

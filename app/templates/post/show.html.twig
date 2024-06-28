@@ -15,9 +15,9 @@
             <dt>{{ 'label.updated_at'|trans }}</dt>
             <dd>{{ post.updatedAt|format_date('long') }}</dd>
             <dt>{{ 'label.title'|trans }}</dt>
-            <dd>{{  post.title }}</dd>
+            <dd>{{ post.title }}</dd>
             <dt>{{ 'label.category'|trans }}</dt>
-            <dd>{{  post.category.title }}</dd>
+            <dd>{{ post.category.title }}</dd>
             <dt>{{ 'label.content'|trans }}</dt>
             <dd>{{ post.content }}</dd>
         </dl>
@@ -50,7 +50,8 @@
                             <td>
                                 <a class="btn btn-outline-danger" href="{{ url('comment_delete', {id: comment.id}) }}" title="{{ 'action.delete'|trans }}">
                                     {{ 'action.delete'|trans }}
-                                </a></td>
+                                </a>
+                            </td>
                         {% endif %}
                     </tr>
                 {% endfor %}

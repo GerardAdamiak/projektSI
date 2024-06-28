@@ -32,7 +32,7 @@ class UserFixtures extends AbstractBaseFixtures
 
         $this->createMany(10, 'users', function (int $i) {
             $user = new User();
-            $user->setEmail(sprintf('users%d@example.com', $i));
+            $user->setEmail(sprintf('user%d@example.com', $i));
             $user->setRoles([UserRole::ROLE_USER->value]);
             $user->setPassword(
                 $this->passwordHasher->hashPassword(
