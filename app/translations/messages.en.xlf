@@ -187,10 +187,6 @@
         <source>action.login</source>
         <target>Log in</target>
       </trans-unit>
-      <trans-unit id="title.user_edit">
-        <source>title.user_edit</source>
-        <target>Change password</target>
-      </trans-unit>
       <trans-unit id="label.password">
         <source>label.password</source>
         <target>Password</target>
