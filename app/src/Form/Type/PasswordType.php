@@ -18,8 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class PasswordType
- *
+ * Class PasswordType.
  */
 class PasswordType extends AbstractType
 {

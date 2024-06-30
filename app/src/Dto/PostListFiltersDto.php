@@ -13,7 +13,7 @@ namespace App\Dto;
 use App\Entity\Category;
 
 /**
- * Class PostListFiltersDto
+ * Class PostListFiltersDto.
  *
  * Data Transfer Object (DTO) for holding filters for the Post list.
  */

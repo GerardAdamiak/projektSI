@@ -14,7 +14,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
 /**
- * Class AppFixtures
+ * Class AppFixtures.
  *
  * Fixture class for loading initial data into the database.
  */

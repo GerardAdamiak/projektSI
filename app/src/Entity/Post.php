@@ -194,14 +194,10 @@ class Post
      * Setter for category.
      *
      * @param Category|null $category Category
-     *
-     * @return static
      */
-    public function setCategory(?Category $category): static
+    public function setCategory(?Category $category): void
     {
         $this->category = $category;
-
-        return $this;
     }
 
     /**
@@ -218,14 +214,10 @@ class Post
      * Setter for author.
      *
      * @param User|null $author Author
-     *
-     * @return static
      */
-    public function setAuthor(?User $author): static
+    public function setAuthor(?User $author): void
     {
         $this->author = $author;
-
-        return $this;
     }
 
     /**
