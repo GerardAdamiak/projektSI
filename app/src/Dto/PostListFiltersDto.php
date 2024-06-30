@@ -20,12 +20,61 @@ use App\Entity\Category;
 class PostListFiltersDto
 {
     /**
+     * @var Category|null Category filter
+     */
+    public ?Category $category;
+
+    /**
+     * @var \DateTimeInterface|null Date filter from
+     */
+    private ?\DateTimeInterface $dateFrom;
+
+    /**
+     * @var \DateTimeInterface|null Date filter to
+     */
+    private ?\DateTimeInterface $dateTo;
+
+    /**
+     * PostListFiltersDto constructor.
+     *
      * @param Category|null           $category Category filter
      * @param \DateTimeInterface|null $dateFrom Date filter from
      * @param \DateTimeInterface|null $dateTo   Date filter to
      */
     public function __construct(?Category $category = null, ?\DateTimeInterface $dateFrom = null, ?\DateTimeInterface $dateTo = null)
     {
-        // Constructor code here
+        $this->category = $category;
+        $this->dateFrom = $dateFrom;
+        $this->dateTo = $dateTo;
+    }
+
+    /**
+     * Get the category filter.
+     *
+     * @return Category|null Category filter
+     */
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    /**
+     * Get the date filter from.
+     *
+     * @return \DateTimeInterface|null Date filter from
+     */
+    public function getDateFrom(): ?\DateTimeInterface
+    {
+        return $this->dateFrom;
+    }
+
+    /**
+     * Get the date filter to.
+     *
+     * @return \DateTimeInterface|null Date filter to
+     */
+    public function getDateTo(): ?\DateTimeInterface
+    {
+        return $this->dateTo;
     }
 }
