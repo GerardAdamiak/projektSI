@@ -18,8 +18,9 @@ interface PostServiceInterface
     /**
      * Get paginated list.
      *
-     * @param int  $page   Page number
-     * @param User $author Author
+     * @param int                     $page    Page number
+     * @param User                    $author  Author
+     * @param PostListInputFiltersDto $filters Filters for querying posts
      *
      * @return PaginationInterface<string, mixed> Paginated list
      */

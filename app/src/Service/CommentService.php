@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the YourProject package.
+ *
+ * (c) Your Name <your-email@example.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Service;
 
 use App\Dto\PostListFiltersDto;
@@ -13,7 +22,6 @@ use Knp\Component\Pager\PaginatorInterface;
 /**
  * Class CommentService.
  */
-
 class CommentService implements CommentServiceInterface
 {
     /**
@@ -30,9 +38,9 @@ class CommentService implements CommentServiceInterface
     /**
      * Constructor.
      *
-     * @param CategoryServiceInterface $categoryService Category service
-     * @param PaginatorInterface       $paginator       Paginator
-     * @param CommentRepository           $commentRepository  comment repository
+     * @param CategoryServiceInterface $categoryService   Category service
+     * @param PaginatorInterface       $paginator         Paginator
+     * @param CommentRepository        $commentRepository comment repository
      */
     public function __construct(private readonly CategoryServiceInterface $categoryService, private readonly PaginatorInterface $paginator, private readonly CommentRepository $commentRepository)
     {

@@ -8,7 +8,6 @@ namespace App\Service;
 
 use App\Dto\PostListInputFiltersDto;
 use App\Entity\Comment;
-use App\Entity\User;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
@@ -19,8 +18,8 @@ interface CommentServiceInterface
     /**
      * Get paginated list.
      *
-     * @param int  $page   Page number
-     *
+     * @param int                     $page    Page number
+     * @param PostListInputFiltersDto $filters Filters for querying comments
      *
      * @return PaginationInterface<string, mixed> Paginated list
      */

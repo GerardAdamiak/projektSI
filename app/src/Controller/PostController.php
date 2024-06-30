@@ -29,14 +29,19 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/post')]
 class PostController extends AbstractController
 {
+    private readonly PostServiceInterface $postService;
+    private readonly TranslatorInterface $translator;
+
     /**
      * Constructor.
      *
      * @param PostServiceInterface $postService Post service
      * @param TranslatorInterface  $translator  Translator
      */
-    public function __construct(private readonly PostServiceInterface $postService, private readonly TranslatorInterface $translator)
+    public function __construct(PostServiceInterface $postService, TranslatorInterface $translator)
     {
+        $this->postService = $postService;
+        $this->translator = $translator;
     }
 
     /**
@@ -64,6 +69,16 @@ class PostController extends AbstractController
         return $this->render('post/index.html.twig', ['pagination' => $pagination]);
     }
 
+    /**
+     * Show action.
+     *
+     * @param Post               $post              Post entity
+     * @param CommentRepository  $commentRepository Comment repository
+     * @param PaginatorInterface $paginator         Paginator
+     * @param Request            $request           HTTP request
+     *
+     * @return Response HTTP response
+     */
     #[Route('/post/{id}', name: 'post_show', methods: ['GET'])]
     public function show(Post $post, CommentRepository $commentRepository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -132,8 +147,6 @@ class PostController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Post $post): Response
     {
-
-
         $form = $this->createForm(
             PostType::class,
             $post,
@@ -176,8 +189,6 @@ class PostController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Post $post): Response
     {
-
-
         $form = $this->createForm(
             FormType::class,
             $post,
@@ -207,7 +218,4 @@ class PostController extends AbstractController
             ]
         );
     }
-
-
-
 }

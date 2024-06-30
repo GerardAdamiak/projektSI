@@ -7,14 +7,13 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\Type\PasswordType;
-use App\Form\Type\UserType; // Ensure you have a form type for User
-use App\Service\UserServiceInterface; // Ensure the service interface is updated for User
+use App\Form\Type\UserType;
+use App\Service\UserServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -38,6 +37,8 @@ class UserController extends AbstractController
     /**
      * Index action.
      *
+     * @param int $page Page number
+     *
      * @return Response HTTP response
      */
     #[\Symfony\Component\Routing\Attribute\Route(name: 'user_index', methods: 'GET')]
@@ -52,7 +53,7 @@ class UserController extends AbstractController
     /**
      * Show action.
      *
-     * @param User $user User
+     * @param User $user User entity
      *
      * @return Response HTTP response
      */
@@ -70,7 +71,8 @@ class UserController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request $request HTTP request
+     * @param Request                     $request        HTTP request
+     * @param UserPasswordHasherInterface $passwordHasher Password hasher
      *
      * @return Response HTTP response
      */
@@ -112,8 +114,9 @@ class UserController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request $request HTTP request
-     * @param User    $user    User entity
+     * @param Request                     $request        HTTP request
+     * @param User                        $user           User entity
+     * @param UserPasswordHasherInterface $passwordHasher Password hasher
      *
      * @return Response HTTP response
      */
@@ -152,7 +155,7 @@ class UserController extends AbstractController
             'users/edit.html.twig',
             [
                 'form' => $form->createView(),
-                'user' => $user, // Ensure 'user' is passed, not 'users'
+                'user' => $user,
             ]
         );
     }
@@ -160,8 +163,9 @@ class UserController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request $request HTTP request
-     * @param User    $user    User entity
+     * @param Request                     $request        HTTP request
+     * @param User                        $user           User entity
+     * @param UserPasswordHasherInterface $passwordHasher Password hasher
      *
      * @return Response HTTP response
      */
@@ -200,11 +204,10 @@ class UserController extends AbstractController
             'users/password.html.twig',
             [
                 'form' => $form->createView(),
-                'user' => $user, // Ensure 'user' is passed, not 'users'
+                'user' => $user,
             ]
         );
     }
-
 
     /**
      * Delete action.

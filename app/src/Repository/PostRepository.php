@@ -115,18 +115,6 @@ class PostRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get or create new query builder.
-     *
-     * @param QueryBuilder|null $queryBuilder Query builder
-     *
-     * @return QueryBuilder Query builder
-     */
-    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
-    {
-        return $queryBuilder ?? $this->createQueryBuilder('post');
-    }
-
-    /**
      * Query posts by author.
      *
      * @param UserInterface      $user    User entity
@@ -144,6 +132,13 @@ class PostRepository extends ServiceEntityRepository
         return $queryBuilder;
     }
 
+    /**
+     * Query actual posts.
+     *
+     * @param PostListFiltersDto $filters Filters
+     *
+     * @return QueryBuilder Query builder
+     */
     public function queryActualPosts(PostListFiltersDto $filters): QueryBuilder
     {
         $queryBuilder = $this->getOrCreateQueryBuilder()
@@ -161,6 +156,13 @@ class PostRepository extends ServiceEntityRepository
         return $this->applyFiltersToList($queryBuilder, $filters);
     }
 
+    /**
+     * Query future posts.
+     *
+     * @param PostListFiltersDto $filters Filters
+     *
+     * @return QueryBuilder Query builder
+     */
     public function queryFuturePosts(PostListFiltersDto $filters): QueryBuilder
     {
         $queryBuilder = $this->getOrCreateQueryBuilder()
@@ -174,6 +176,18 @@ class PostRepository extends ServiceEntityRepository
             ->orderBy('post.postDate', 'ASC');
 
         return $this->applyFiltersToList($queryBuilder, $filters);
+    }
+
+    /**
+     * Get or create new query builder.
+     *
+     * @param QueryBuilder|null $queryBuilder Query builder
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        return $queryBuilder ?? $this->createQueryBuilder('post');
     }
 
     /**

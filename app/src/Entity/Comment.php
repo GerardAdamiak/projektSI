@@ -9,7 +9,6 @@ namespace App\Entity;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -34,7 +33,6 @@ class Comment
     #[Assert\Email]
     #[Assert\Length(max: 255)]
     private ?string $email = null;
-
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
@@ -98,8 +96,6 @@ class Comment
 
         return $this;
     }
-
-
 
     /**
      * @return string|null Content
